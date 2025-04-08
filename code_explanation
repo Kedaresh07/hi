@@ -1,0 +1,90 @@
+Here's an explanation of the changes made to address each of the TODO sections:
+1. Preprocessing Regression Data with Oversampling
+
+Standardize Features:
+
+    We use StandardScaler from sklearn.preprocessing to standardize the features. This is crucial for neural networks as it helps in faster convergence by ensuring all features are on the same scale.
+
+    The scaler is fit on the training data and then applied to both the training and validation/test data.
+
+Apply Oversampling to Training Data Using SMOTE:
+
+    SMOTE (Synthetic Minority Over-sampling Technique) is typically used for classification problems to handle class imbalance. However, for regression, we can use a variant where we bin the target variable into categories and then apply SMOTE to these bins.
+
+    We bin the target variable into n_bins categories using pd.qcut. This creates pseudo-classes for SMOTE.
+
+    We then apply SMOTE to these binned targets to oversample the minority bins.
+
+    After oversampling, we replace the binned targets with the median value of each bin to maintain the regression nature of the problem.
+
+2. Creating a Neural Network with Specific Optimizers, Loss Functions, and L1 Regularization
+
+Define the Layers of the Network:
+
+    We define a neural network with multiple fully connected (Linear) layers.
+
+    Each hidden layer is followed by a ReLU activation function to introduce non-linearity.
+
+    We also add Dropout layers to prevent overfitting by randomly dropping out neurons during training.
+
+    The output layer has no activation function since this is a regression problem.
+
+Implement the Forward Pass:
+
+    The forward pass simply involves passing the input through the network defined in the __init__ method.
+
+Define Loss Function and Optimizer:
+
+    We use MSELoss as the loss function, which is common for regression problems.
+
+    The optimizer used is Adam with a learning rate of 0.001, which is a popular choice due to its adaptive learning rate.
+
+3. Logging Training Details
+
+Setup Logging:
+
+    We create a directory for logs and initialize a CSVLogger to save training metrics.
+
+    The logger saves metrics like loss and MAE for both training and validation sets at each epoch.
+
+Implement Training Loop:
+
+    The training loop iterates over epochs and batches.
+
+    For each batch, it calculates the loss, performs backpropagation, and updates the model parameters.
+
+    It also logs the average loss and MAE for each epoch.
+
+4. Evaluating the Model with Multiple Performance Metrics
+
+Convert X_test and y_test to PyTorch Tensors:
+
+    Ensure that the test data is in tensor format for PyTorch operations.
+
+Make Predictions on Test Data:
+
+    Use the trained model to predict outputs for the test data.
+
+    This is done with torch.no_grad() to prevent unnecessary gradient computations.
+
+Calculate and Print Regression Metrics:
+
+    We calculate and print metrics like Mean Squared Error (MSE), Mean Absolute Error (MAE), and R² score.
+
+    These metrics provide insights into the model's performance.
+
+5. Plotting Accuracy and Loss Curves
+
+Create a Figure with Two Subplots:
+
+    The first subplot shows the training and validation loss over epochs.
+
+    The second subplot shows the training and validation MAE over epochs.
+
+Save and Display the Plot:
+
+    The plot is saved as an image file named training_plots.png.
+
+    It is also displayed on the screen.
+
+These changes ensure that the code covers all aspects of the assignment, including data preprocessing, model creation, training, evaluation, and visualization.
